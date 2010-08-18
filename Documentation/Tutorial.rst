@@ -58,5 +58,5 @@ In this case, timer cases are read from the Python module `MyModuleTimings.py`. 
     timeA.repeat = 2
     timeB.repeat = 3
 
-    # Use this description inѕtead of the default.
+    # Use this description instead of the default.
     timeC.description = "Superduper fix"
