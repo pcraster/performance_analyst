@@ -1,0 +1,7 @@
+*.pyc
+PerformanceAnalyst.zip
+bla/
+build/
+dist/
+distribute-*.*.*-py*.*.egg
+distribute-*.*.*.tar.gz
