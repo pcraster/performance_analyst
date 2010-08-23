@@ -9,6 +9,8 @@ tests:
 egg: setup.py
 	python setup.py --quiet bdist_egg
 
+# TODO On Windows, the executable/scripts are in <prefix>/Scripts instead of
+#      <prefix>/bin.
 test_dist:
 	rm -fr bla
 	virtualenv --no-site-packages --quiet bla
