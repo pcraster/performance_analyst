@@ -1,6 +1,5 @@
 import os.path
 import sqlite3
-import StringIO
 import unittest
 
 import PerformanceAnalyst as pa
@@ -15,11 +14,11 @@ class SQLiteTimerRunnerTests(unittest.TestCase):
     """Test running the example timer case"""
     databaseName = "TestTimings.sqlite"
     runner = pa.SQLiteTimerRunner.SQLiteTimerRunner(databaseName=databaseName)
-    result = runner.run(pa.TimerSuite.TimerSuite([pa.TimerSuite.TimerSuite([
+    result = runner.run(pa.TimerSuite.TimerSuite([
          MyModuleTimers.MyModuleTimers("timeA"),
          MyModuleTimers.MyModuleTimers("timeB"),
          MyModuleTimers.MyModuleTimers("timeC"),
-    ])]))
+    ]))
 
     self.assertEqual(len(result), 3)
     self.assert_("MyModuleTimers.timeA" in result)

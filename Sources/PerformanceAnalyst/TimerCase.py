@@ -103,3 +103,5 @@ class TimerCase(object):
     result[self.id()] = [datetime.datetime.now(),
          unicode(getattr(self.method, "description", self.id())), timings]
 
+  def nrTimerCases(self):
+    return 1

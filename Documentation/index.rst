@@ -13,6 +13,7 @@ Contents:
    GeneratingTimerCases
    PerformanceAnalyst
    pa.py
+   History
 
 Indices and tables
 ==================

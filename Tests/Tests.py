@@ -2,12 +2,14 @@ import logging
 import sys
 import unittest
 
+
+
 sys.path.append("../Sources")
 
 logging.basicConfig(
-         level=logging.DEBUG,
-         filename="UnitTests.log",
-         filemode="w",
+  level=logging.DEBUG,
+  filename="UnitTests.log",
+  filemode="w",
 )
 
 loader = unittest.defaultTestLoader
@@ -19,4 +21,8 @@ if __name__ == "__main__":
     loader.loadTestsFromName("TimerSuiteTests.TimerSuiteTests"),
     loader.loadTestsFromName("TimerRunnerTests.TimerRunnerTests"),
     loader.loadTestsFromName("SQLiteTimerRunnerTests.SQLiteTimerRunnerTests"),
+    loader.loadTestsFromName(
+      "ProgressTimerRunnerTests.ProgressTimerRunnerTests"),
+    loader.loadTestsFromName(
+      "CompositeTimerRunnerTests.CompositeTimerRunnerTests"),
   ]))

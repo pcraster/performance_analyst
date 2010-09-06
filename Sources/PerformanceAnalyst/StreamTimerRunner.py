@@ -1,7 +1,7 @@
 """
-***************
-TextTimerRunner
-***************
+*****************
+StreamTimerRunner
+*****************
 """
 import sys
 
@@ -9,7 +9,7 @@ import TimerRunner
 
 
 
-class TextTimerRunner(TimerRunner.TimerRunner):
+class StreamTimerRunner(TimerRunner.TimerRunner):
   """
   Timer runner that prints results to a stream.
 
@@ -29,6 +29,6 @@ class TextTimerRunner(TimerRunner.TimerRunner):
 
   def processTimerResult(self,
          result):
-    stream.write(str(result))
-    stream.flush()
+    self.stream.write(str(result))
+    self.stream.flush()
 

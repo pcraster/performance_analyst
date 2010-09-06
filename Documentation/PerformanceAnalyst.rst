@@ -23,12 +23,26 @@
    :undoc-members:
    :show-inheritance:
 
-.. automodule:: PerformanceAnalyst.TextTimerRunner
+.. automodule:: PerformanceAnalyst.CompositeTimerRunner
    :members:
    :undoc-members:
    :show-inheritance:
 
-.. inheritance-diagram:: PerformanceAnalyst.TextTimerRunner
+.. inheritance-diagram:: PerformanceAnalyst.CompositeTimerRunner
+
+.. automodule:: PerformanceAnalyst.StreamTimerRunner
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. inheritance-diagram:: PerformanceAnalyst.StreamTimerRunner
+
+.. automodule:: PerformanceAnalyst.ProgressTimerRunner
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. inheritance-diagram:: PerformanceAnalyst.ProgressTimerRunner
 
 .. automodule:: PerformanceAnalyst.SQLiteTimerRunner
    :members:

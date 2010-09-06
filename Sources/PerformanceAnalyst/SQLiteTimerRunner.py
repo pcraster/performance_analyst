@@ -29,7 +29,8 @@ class SQLiteTimerRunner(TimerRunner.TimerRunner):
          duration REAL)""" % (tableName))
          # description text,
 
-  def setUp(self):
+  def setUp(self,
+    nrTimerCases):
     self.connection = sqlite3.connect(self.databaseName)
     self.cursor = self.connection.cursor()
 

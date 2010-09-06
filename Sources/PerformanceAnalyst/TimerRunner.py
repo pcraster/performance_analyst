@@ -20,9 +20,13 @@ class TimerRunner(object):
   database, send an email, cook a meal, whatever.
   """
 
-  def setUp(self):
+  def setUp(self,
+    nrTimerCases):
     """
     Perform initial actions needed by the timer runner.
+
+    `nrTimerCases`
+      Number of timer cases in the suites to be run.
 
     This function is called by :meth:`run`. The default does nothing.
     Override when necessary.
@@ -44,7 +48,7 @@ class TimerRunner(object):
     Perform some side effect based on the timer result obtained by running a
     timer case.
 
-    This function is called after runnin each timer case in turn.
+    This function is called after running each timer case in turn.
 
     This function is called by :meth:`run`. The default does nothing.
     Override when necessary.
@@ -95,7 +99,7 @@ class TimerRunner(object):
     This function calls :meth:`setUp`, :meth:`processTimerResult`, and
     :meth:`tearDown` at the appropriate times.
     """
-    self.setUp()
+    self.setUp(suite.nrTimerCases())
 
     result = self._runTestSuite(suite)
 

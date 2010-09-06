@@ -33,3 +33,10 @@ class TimerSuite(list):
     for timer in self:
       timer.run(result)
 
+  def nrTimerCases(self):
+    result = 0
+
+    for timer in self:
+      result += timer.nrTimerCases()
+
+    return result
