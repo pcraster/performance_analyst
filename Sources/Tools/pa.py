@@ -240,7 +240,6 @@ class _Command(object):
     the `ls` sub-command of `pa.py` to test your expressions patterns before
     issueing the `rm` sub-command, for example.
     """
-
     result = []
     timerNames = self._timerNames(cursor)
 
@@ -403,12 +402,13 @@ timers are provided.
 
     connection = sqlite3.connect(self.databaseName)
     cursor = connection.cursor()
-    self.names = self._parseTimerNames(cursor, self.names)
 
     if len(self.names) == 0:
       for record in cursor.execute("select * from sqlite_master").fetchall():
         sys.stdout.write("%s\n" % (record[1]))
     else:
+      self.names = self._parseTimerNames(cursor, self.names)
+
       for name in self.names:
         records = cursor.execute("select * from %s" % (name)).fetchall()
         timestamps = {}
@@ -461,7 +461,7 @@ Rename a timer case.
     assert len(self.names) == 2
 
     cursor.execute("alter table %s rename to %s" % (self.names[0],
-         self.names[1]))
+      self.names[1]))
     connection.commit()
 
     return 0
