@@ -7,7 +7,7 @@ from setuptools import setup, find_packages
 setup(
   install_requires=["psutil>=0.1.3"],
   name = "PerformanceAnalyst",
-  version = "0.0.3",
+  version = "0.0.4",
   package_dir = {"": "Sources"},
   packages = find_packages(where="Sources"),
   # package_data = {"": ["Documentation/_build/html/*"]},
@@ -16,7 +16,7 @@ setup(
   author_email = "kdejong@geo.uu.nl",
   # description = "xxx",
   # long_description = "xxx",
-  license = "GPL",
+  license = "MIT, http://www.opensource.org/licenses/mit-license.html",
   # keywords = ["xxx xxx xxx"],
   url = "http://pcraster.sourceforge.net",
   zip_safe = True,
