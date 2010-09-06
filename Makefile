@@ -3,14 +3,12 @@ all: docs tests
 doc docs:
 	make -C Documentation clean html
 
-tests:
+test tests:
 	make -C Tests all
 
 egg: setup.py
 	python setup.py --quiet bdist_egg
 
-# TODO On Windows, the executable/scripts are in <prefix>/Scripts instead of
-#      <prefix>/bin.
 test_dist:
 	rm -fr bla
 	virtualenv --no-site-packages --quiet bla
@@ -23,7 +21,7 @@ test_dist:
 
 dist: egg test_dist doc
 	zip --recurse-paths --junk-paths PerformanceAnalyst.zip Documentation/_build/html
-	ls dist/PerformanceAnalyst-*.egg PerformanceAnalyst.zip
+	ls -ltr dist/PerformanceAnalyst-*.egg PerformanceAnalyst.zip
 
 clean:
 	make -C Sources $@
