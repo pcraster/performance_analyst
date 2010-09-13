@@ -9,11 +9,18 @@ Contents:
 .. toctree::
    :maxdepth: 1
 
+   Installation
    Tutorial
    GeneratingTimerCases
-   PerformanceAnalyst
-   pa.py
    History
+
+Source code documentation:
+
+.. toctree::
+   :maxdepth: 1
+
+   pa.py
+   PerformanceAnalyst
 
 Indices and tables
 ==================

@@ -4,8 +4,11 @@
 History
 *******
 
-0.0.4 (in development)
+0.0.5 (in development)
 ======================
+
+0.0.4
+=====
 - Removed bug in TextTimerRunner.
 - Renamed TextTimerRunner into StreamTimerRunner.
 - Added CompositeTimerRunner, ProgressTimerRunner.
