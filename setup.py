@@ -7,7 +7,7 @@ from setuptools import setup, find_packages
 setup(
   install_requires=["psutil>=0.1.3"],
   name = "PerformanceAnalyst",
-  version = "0.0.4",
+  version = "0.0.5",
   package_dir = {"": "Sources"},
   packages = find_packages(where="Sources"),
   # package_data = {"": ["Documentation/_build/html/*"]},
