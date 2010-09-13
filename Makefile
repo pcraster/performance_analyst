@@ -20,7 +20,7 @@ test_dist:
 	bla/bin/python -c "import psutil, PerformanceAnalyst; print dir(PerformanceAnalyst)"
 
 dist: egg test_dist doc
-	zip --recurse-paths --junk-paths PerformanceAnalyst.zip Documentation/_build/html
+	cd Documentation/_build && zip --recurse-paths ../../PerformanceAnalyst-0.0.5.zip html
 	ls -ltr dist/PerformanceAnalyst-*.egg PerformanceAnalyst.zip
 
 clean:
