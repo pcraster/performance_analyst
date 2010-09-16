@@ -6,6 +6,8 @@ History
 
 0.0.5 (in development)
 ======================
+- Fixed bug in documentation generation.
+- Installation of the PerformanceAnalyst won't install psutil anymore, since that doesn't work on Windows. The user has to install the requirements seperately.
 
 0.0.4
 =====
