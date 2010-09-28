@@ -1,11 +1,22 @@
+import platform
+
 # http://nightly.ziade.org/distribute_setup.py
 from distribute_setup import use_setuptools
 use_setuptools()
 
 from setuptools import setup, find_packages
 
+requirements = []
+
+if platform.system() != "Windows":
+  requirements = [
+    "psutil>=0.1.3",
+    # "numpy>=1.1",
+    # "matplotlib>=1.0.0",
+  ]
+
 setup(
-  # install_requires=["psutil>=0.1.3"], And matplotlib. Doesn't work on Windows.
+  install_requires=requirements,
   name = "PerformanceAnalyst",
   version = "0.0.5",
   package_dir = {"": "Sources"},
