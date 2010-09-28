@@ -17,7 +17,7 @@ class TimerLoader(object):
   """
 
   def loadTimersFromName(self,
-         name):
+    name):
     """
     Load timer cases from a module with a :class:`PerformanceAnalyst.TimerCase.TimerCase` sub-class.
 
@@ -45,20 +45,14 @@ class TimerLoader(object):
 
     with fileDescriptor:
       module = imp.load_module(moduleName, fileDescriptor, pathName,
-         description)
+        description)
 
     class_ = [tuple[1] for tuple in \
-         inspect.getmembers(module, inspect.isclass) \
-         if tuple[0] == className][0]
-    methodNames = [tuple[0] for tuple in \
-         inspect.getmembers(class_, inspect.ismethod) \
-         if tuple[0].find("time") == 0]
-
-    return TimerSuite.TimerSuite([class_(methodName) \
-         for methodName in methodNames])
+      inspect.getmembers(module, inspect.isclass) if tuple[0] == className][0]
+    return self.loadTimersFromTimerCase(class_)
 
   def loadTimersFromNames(self,
-         names):
+    names):
     """
     Load timer cases from a number of modules.
 
@@ -66,4 +60,19 @@ class TimerLoader(object):
       Iterable with names of TimerCase sub-classes.
     """
     return [self.loadTimersFromName(name) for name in names]
+
+  def loadTimersFromTimerCase(self,
+    class_):
+    """
+    Load timer cases from a TimerCase derived `class_`.
+
+    `class_`
+      TimerCase derived class to load timer cases from.
+    """
+    methodNames = [tuple[0] for tuple in \
+      inspect.getmembers(class_, inspect.ismethod) \
+        if tuple[0].find("time") == 0]
+
+    return TimerSuite.TimerSuite([class_(methodName) \
+      for methodName in methodNames])
 
