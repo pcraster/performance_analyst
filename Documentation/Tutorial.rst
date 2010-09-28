@@ -13,10 +13,10 @@ Below is a small example of a Python module which uses a timer loader to run a c
   loader = pa.TimerLoader.TimerLoader()
 
   pa.SQLiteTimerRunner.SQLiteTimerRunner(
-         databaseName="MyDatabase.sqlite3").run(pa.TimerSuite.TimerSuite([
-    loader.loadTimerFromName("MyModuleTimings.MyModuleTimings"),
+         databaseName="MyDatabase.sqlite3").run(
+    loader.loadTimersFromName("MyModuleTimings.MyModuleTimings"),
     # ... More timer suites ...
-  ]))
+  )
 
 In this case, timer cases are read from the Python module `MyModuleTimings.py`. To simulate a real world example, the sleep function is used to spend some time doing nothing.
 

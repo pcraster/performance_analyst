@@ -13,7 +13,7 @@ class CompositeTimerRunner(TimerRunner.TimerRunner, list):
   and will forward all calls to them.
 
   This is an implementation of the composite pattern. Using this class you can
-  create timer runners (leaves in the pattern's lingo) that, for example,
+  create timer runners (`leaves` in the pattern's lingo) that, for example,
   write their results to a database *and* will print status information
   to a stream. Without this class that is not possible, since
   :class:`PerformanceAnalyst.SQLiteTimerRunner.SQLiteTimerRunner` class

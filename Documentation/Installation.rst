@@ -10,9 +10,10 @@ The PerformanceAnalyst is distributed as an egg-file. The `easy_install command 
 
   easy_install PerformanceAnalyst-<version>-py<python version>.egg
 
-The PerformanceAnalyst code uses two other packages which need to be installed seperately:
+The PerformanceAnalyst code uses two other packages which need to be installed seperately, depending on the platform:
 
 Matplotlib
   http://matplotlib.sourceforge.net
-psutil
+psutil (installed automatically on non-Windows platforms)
   http://code.google.com/p/psutil
+
