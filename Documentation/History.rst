@@ -4,8 +4,11 @@
 History
 *******
 
-0.0.5 (in development)
+0.0.6 (in development)
 ======================
+
+0.0.5
+=====
 - Added TimerLoader.loadTimersFromTimerCase.
 - Fixed bug in documentation generation.
 - On Windows, installation of the PerformanceAnalyst won't install psutil and matplotlib anymore, since that doesn't work. The user has to install the requirements separately.
