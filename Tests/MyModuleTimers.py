@@ -30,6 +30,9 @@ class MyModuleTimers(TimerCase.TimerCase):
     for i in range(200000):
       math.sqrt(i)
 
+  def timeRaiseException(self):
+    assert False
+
   timeA.repeat = 2
   timeB.repeat = 3
   timeC.description = "Superduper fix"
