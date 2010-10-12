@@ -6,6 +6,7 @@ History
 
 0.0.6 (in development)
 ======================
+- Added SQLiteTimerRunner.databaseIsConsistent.
 
 0.0.5
 =====
