@@ -10,6 +10,13 @@ import psutil
 
 
 
+def _timeDeltaInSeconds(
+  delta):
+  return (delta.microseconds +
+          (delta.seconds + delta.days * 24.0 * 3600.0) * 10.0**6) / 10.0**6
+
+
+
 class TimerCase(object):
   """
   Timer case instances are the things that get timed by the framework.
@@ -88,15 +95,21 @@ class TimerCase(object):
     process = psutil.Process(os.getpid())
 
     for i in range(getattr(self.method, "repeat", 1)):
-      userTime, systemTime = process.get_cpu_times()
-      startTime = userTime + systemTime
+      userCPUTime, systemCPUTime = process.get_cpu_times()
+      startRealTime = datetime.datetime.now()
+      startCPUTime = userCPUTime + systemCPUTime
 
       self.method()
 
-      userTime, systemTime = process.get_cpu_times()
-      endTime = userTime + systemTime
+      userCPUTime, systemCPUTime = process.get_cpu_times()
+      endRealTime = datetime.datetime.now()
+      endCPUTime = userCPUTime + systemCPUTime
 
-      timings.append(endTime - startTime)
+      realTimeDurationInSeconds = _timeDeltaInSeconds(
+        endRealTime - startRealTime)
+      cpuTimeDurationInSeconds = endCPUTime - startCPUTime
+
+      timings.append((realTimeDurationInSeconds, cpuTimeDurationInSeconds))
 
     self.tearDown()
 

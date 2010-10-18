@@ -8,6 +8,10 @@ The performance is measured by the amount of `CPU time <http://en.wikipedia.org/
 
    The design and terminology of this package is based on Python’s `unit testing framework <http://docs.python.org/library/unittest.html#module-unittest>`_, so it may be useful to refer to its documentation too.
 
+.. warning::
+
+   Don't miss the :py:mod:`SQLiteTimerRunner's warnings <PerformanceAnalyst.SQLiteTimerRunner>` in case you are using the SQLiteTimerRunner to store your timings in an SQLite database file.
+
 Contents:
 
 .. toctree::

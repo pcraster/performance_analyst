@@ -45,12 +45,15 @@ class TimerSuiteTests(unittest.TestCase):
     self.assertEqual(description, suite[0].id())
 
     # Durations.
-    durations = result[suite[0].id()][2]
-    self.assertEqual(len(durations), 2)
+    durationTuples = result[suite[0].id()][2]
+    self.assertEqual(len(durationTuples), 2)
 
-    for duration in durations:
-      self.assert_(isinstance(duration, float))
-      self.assert_(duration > 0.0)
+    for durationTuple in durationTuples:
+      self.assert_(isinstance(durationTuple, tuple))
+      self.assertEqual(len(durationTuples), 2)
+      for duration in durationTuple:
+        self.assert_(isinstance(duration, float))
+        self.assert_(duration > 0.0)
 
     # timeB --------------------------------------------------------------------
     self.assertEqual(len(result[suite[1].id()]), 3)

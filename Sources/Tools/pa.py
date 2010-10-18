@@ -118,6 +118,13 @@ Command is one of the sub-commands:
 
   **timer**
     Name of timer.
+**history**
+  Print history of the database::
+
+    pa.py stat [options] <database>
+
+  **database**
+    Name of performance database.
 """
 
 import datetime
@@ -132,6 +139,8 @@ import matplotlib.ticker as ticker
 import numpy
 import pylab
 
+from PerformanceAnalyst import SQLiteTimerRunner
+
 
 
 def _uniquefyList(list_):
@@ -145,6 +154,19 @@ def _uniquefyList(list_):
   """
   seen = set()
   return [item for item in  list_ if item not in seen and not seen.add(item)]
+
+
+
+def _stringToTimestamp(
+  string):
+  try:
+    # String with microseconds.
+    timestamp = datetime.datetime.strptime(string, "%Y-%m-%d %H:%M:%S.%f")
+  except ValueError:
+    # String without microseconds.
+    timestamp = datetime.datetime.strptime(string, "%Y-%m-%d %H:%M:%S")
+
+  return timestamp
 
 
 
@@ -252,6 +274,14 @@ class _Command(object):
     return _uniquefyList(result)
 
 
+  def _updateDatabase(self,
+    connection,
+    cursor):
+    # The runner knows best whether the database must be updated and how to
+    # do it.
+    SQLiteTimerRunner.SQLiteTimerRunner.updateDatabase(connection, cursor)
+
+
 
 class _Plot(_Command):
 
@@ -286,74 +316,86 @@ Creates a pdf with a plot of all timers supplied.
     return algorithms[algorithm](data)
 
   def _readData(self,
-         cursor,
-         tableName):
+    cursor,
+    tableName):
     assert not cursor.execute(
-         "pragma table_info(%s)" % (tableName)).fetchone() is None, \
-              "Table %s does not exist" % (tableName)
+      "PRAGMA TABLE_INFO(%s)" % (tableName)).fetchone() is None, \
+        "Table %s does not exist" % (tableName)
 
-    data = {}
+    realTimes = {}
+    cpuTimes = {}
 
     for record in cursor.execute("select * from %s" % (tableName)).fetchall():
-      try:
-        # String with microseconds.
-        timestamp = datetime.datetime.strptime(record[0],
-              "%Y-%m-%d %H:%M:%S.%f")
-      except ValueError:
-        # String without microseconds.
-        timestamp = datetime.datetime.strptime(record[0],
-              "%Y-%m-%d %H:%M:%S")
+      timestamp = _stringToTimestamp(record[0])
 
-      value = float(record[1])
+      # CPU-time is in the third field. Skip real-time for now.
+      realTime = float(record[1])
+      cpuTime = float(record[2])
 
-      if not timestamp in data:
-        data[timestamp] = [value]
+      if not timestamp in realTimes:
+        assert not timestamp in cpuTimes
+        realTimes[timestamp] = [realTime]
+        cpuTimes[timestamp] = [cpuTime]
       else:
-        data[timestamp].append(value)
+        assert timestamp in cpuTimes
+        realTimes[timestamp].append(realTime)
+        cpuTimes[timestamp].append(cpuTime)
 
-    for timestamp in data:
-      data[timestamp] = numpy.array(data[timestamp])
+    for timestamp in realTimes:
+      realTimes[timestamp] = numpy.array(realTimes[timestamp])
+      cpuTimes[timestamp] = numpy.array(cpuTimes[timestamp])
 
-    return data
+    return realTimes, cpuTimes
 
   def run(self):
     self.parseArguments()
 
-    assert os.path.isfile(self.databaseName), \
-         "Database %s does not exist" % (self.databaseName)
+    assert os.path.isfile(self.databaseName), "Database %s does not exist" % (
+      self.databaseName)
 
     connection = sqlite3.connect(self.databaseName)
     cursor = connection.cursor()
+    self._updateDatabase(connection, cursor)
 
     figure = pyplot.figure(figsize=(15, 10))
     axis = figure.add_subplot(111)
-    data = {}
-    mean = {}
-    std = {}
+    realTimes, realTimesMean, realTimesStd = {}, {}, {}
+    cpuTimes, cpuTimesMean, cpuTimesStd = {}, {}, {}
 
     for name in self.names:
-      data[name] = self._readData(cursor, name)
+      # Tuples of (real_time, cpu_time)
+      realTimes[name], cpuTimes[name] = self._readData(cursor, name)
 
     lines = {}
 
     # Calculate statistics.
     for name in self.names:
-      mean[name] = [self._aggregateData(data[name][timestamp],
-         algorithm="mean") for timestamp in sorted(data[name])]
-      std[name] = [self._aggregateData(data[name][timestamp],
-         algorithm="std") for timestamp in sorted(data[name])]
+      realTimesMean[name] = [self._aggregateData(realTimes[name][timestamp],
+         algorithm="mean") for timestamp in sorted(realTimes[name])]
+      cpuTimesMean[name] = [self._aggregateData(cpuTimes[name][timestamp],
+         algorithm="mean") for timestamp in sorted(cpuTimes[name])]
+      realTimesStd[name] = [self._aggregateData(realTimes[name][timestamp],
+         algorithm="std") for timestamp in sorted(realTimes[name])]
+      cpuTimesStd[name] = [self._aggregateData(cpuTimes[name][timestamp],
+         algorithm="std") for timestamp in sorted(cpuTimes[name])]
 
     # Plot mean timing.
     for name in self.names:
-      lines[name] = axis.plot(sorted(data[name]), mean[name], "o-")[0]
+      # Store properties of plot with real-time values.
+      lines[name] = axis.plot(sorted(realTimes[name]), realTimesMean[name],
+        "o-")[0]
+      axis.plot(sorted(cpuTimes[name]), cpuTimesMean[name], "o--",
+        color=lines[name].get_color())
 
     # Plot error bars.
     for name in self.names:
-      axis.errorbar(sorted(data[name]), mean[name], std[name],
-         fmt="o", color=lines[name].get_color())
+      axis.errorbar(sorted(realTimes[name]), realTimesMean[name],
+        realTimesStd[name], fmt="o", color=lines[name].get_color())
+      axis.errorbar(sorted(cpuTimes[name]), cpuTimesMean[name],
+        cpuTimesStd[name], fmt="o", color=lines[name].get_color())
 
     legend = pyplot.figlegend([lines[name] for name in self.names], self.names,
-         "upper right") # loc=(0.0, 0.0))
+      "upper right") # loc=(0.0, 0.0))
 
     for text in legend.get_texts():
       text.set_fontsize("small")
@@ -402,6 +444,7 @@ timers are provided.
 
     connection = sqlite3.connect(self.databaseName)
     cursor = connection.cursor()
+    self._updateDatabase(connection, cursor)
 
     if len(self.names) == 0:
       for record in cursor.execute("select * from sqlite_master").fetchall():
@@ -415,7 +458,7 @@ timers are provided.
 
         for record in records:
           if not record[0] in timestamps:
-            timestamps[record[0]] = 1
+            timestamps[record[0]]  = 1
           else:
             timestamps[record[0]] += 1
 
@@ -457,6 +500,7 @@ Rename a timer case.
 
     connection = sqlite3.connect(self.databaseName)
     cursor = connection.cursor()
+    self._updateDatabase(connection, cursor)
 
     assert len(self.names) == 2
 
@@ -498,6 +542,8 @@ Remove a timer case from the database.
 
     connection = sqlite3.connect(self.databaseName)
     cursor = connection.cursor()
+    self._updateDatabase(connection, cursor)
+
     self.names = self._parseTimerNames(cursor, self.names)
     self.timestamps = self._parseTimestamps(cursor, self.names, self.timestamps)
 
@@ -573,9 +619,8 @@ Queries the database and calculates some statistics for the timings passed in:
          name,
          timestamp):
     tuple_ = (timestamp,)
-    records = cursor.execute("select duration from %s where timestamp=?" % (
+    records = cursor.execute("SELECT cpu_time FROM %s WHERE timestamp=?" % (
          name), tuple_).fetchall()
-
     return [record[0] for record in records]
 
   def _writeSummaryStatistics(self,
@@ -667,6 +712,8 @@ Queries the database and calculates some statistics for the timings passed in:
 
     connection = sqlite3.connect(self.databaseName)
     cursor = connection.cursor()
+    self._updateDatabase(connection, cursor)
+
     self.names = self._parseTimerNames(cursor, self.names)
     self.timestamps = self._parseTimestamps(cursor, self.names, self.timestamps)
 
@@ -681,6 +728,47 @@ Queries the database and calculates some statistics for the timings passed in:
 
 
 
+class _History(_Command):
+
+  def __init__(self,
+         arguments=[]):
+    _Command.__init__(self, arguments,
+         usage="Usage: history [options] <database>",
+         epilog= """
+Print history of the database.
+""")
+
+  def parseArguments(self):
+    (options, arguments) = self.parser.parse_args(self.arguments)
+
+    if len(arguments) != 1:
+      self.printHelp()
+      sys.exit(2)
+
+    self.databaseName = arguments[0]
+
+  def run(self):
+    self.parseArguments()
+
+    assert os.path.isfile(self.databaseName), \
+         "Database %s does not exist" % (self.databaseName)
+
+    connection = sqlite3.connect(self.databaseName)
+    cursor = connection.cursor()
+    self._updateDatabase(connection, cursor)
+
+    records = cursor.execute(
+      "SELECT * FROM History ORDER BY timestamp ASC").fetchall()
+
+    for record in records:
+      timestamp = _stringToTimestamp(record[0])
+      version = record[1]
+      description = record[2]
+
+      sys.stdout.write("{0} {1} {2}\n".format(timestamp, version, description))
+
+
+
 if __name__ == "__main__":
   commands = {
     "plot": _Plot,
@@ -688,6 +776,7 @@ if __name__ == "__main__":
     "mv": _Mv,
     "rm" : _Rm,
     "stat" : _Stat,
+    "history" : _History,
   }
 
   def testCommand(

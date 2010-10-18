@@ -7,6 +7,7 @@ History
 0.0.6 (in development)
 ======================
 - Added SQLiteTimerRunner.databaseIsConsistent.
+- Added support for tracking real time, besides CPU-time. This required a change in the database structure. See the :py:mod:`SQLiteTimerRunner's warnings <PerformanceAnalyst.SQLiteTimerRunner>`!
 
 0.0.5
 =====

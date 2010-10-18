@@ -20,8 +20,9 @@ class TimerResult(dict):
   The first item is the time stamp of the moment the timer case finished. The
   second item is the description or the
   :meth:`timer case's id <PerformanceAnalyst.TimerCase.TimerCase.id>` if no
-  description was found. The third item is a list of timings, one for
-  each time the timer case was run. Timings are in seconds.
+  description was found. The third item is a list of timings, one tuple of
+  (real_time, cpu_time), for each time the timer case was run. Timings are in
+  seconds.
   """
 
   def __str__(self):
@@ -31,8 +32,8 @@ class TimerResult(dict):
     For each timer case the result is formatted as folows::
 
       <key>
-      <time stamp> <description | id> <timing1>
-      <time stamp> <description | id> <timing2>
+      <time stamp> <description | id> <real_time1> <cpu_time1>
+      <time stamp> <description | id> <real_time2> <cpu_time2>
       ...
     """
     result = []
@@ -40,7 +41,9 @@ class TimerResult(dict):
     for key in self:
       result.append(key)
 
-      for timing in self[key][2]:
-        result.append("%s %s %g" % (str(self[key][0]), self[key][1], timing))
+      for timings in self[key][2]:
+        # timings is a tuple of (real_time, cpu_time)
+        result.append("%s %s %s" % (str(self[key][0]), self[key][1],
+          " ".join(str(timing) for timing in timings)))
 
     return "\n".join(result) + "\n"
