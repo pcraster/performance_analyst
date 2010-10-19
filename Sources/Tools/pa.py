@@ -90,6 +90,9 @@ Command is one of the sub-commands:
 
     pa.py plot [options] <output> <database> <timer>+
 
+  The plot will contain two lines for each timer: a solid line for the cpu-time
+  and a dashed line for the real-time.
+
   **output**
     Name of output pdf.
 
