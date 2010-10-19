@@ -163,8 +163,12 @@ def _stringToTimestamp(
     # String with microseconds.
     timestamp = datetime.datetime.strptime(string, "%Y-%m-%d %H:%M:%S.%f")
   except ValueError:
-    # String without microseconds.
-    timestamp = datetime.datetime.strptime(string, "%Y-%m-%d %H:%M:%S")
+    try:
+      # String without microseconds.
+      timestamp = datetime.datetime.strptime(string, "%Y-%m-%d %H:%M:%S")
+    except ValueError:
+      # String without time.
+      timestamp = datetime.datetime.strptime(string, "%Y-%m-%d")
 
   return timestamp
 
@@ -190,10 +194,11 @@ class _Command(object):
   def printHelp(self):
     self.parser.print_help()
 
-  def _addTimestampOption(self):
+  def _addTimestampOption(self,
+    default):
     self.parser.add_option("--timestamp",
          dest="timestamp",
-         default="latest",
+         default=default,
          help="timestamp to select (timestamp, 'latest' or -1, -2, -3, etc)")
 
   def _timestamps(self,
@@ -292,6 +297,7 @@ class _Plot(_Command):
          epilog= """
 Creates a pdf with a plot of all timers supplied.
 """)
+    self._addTimestampOption(default="2000-01-01")
 
   def parseArguments(self):
     (options, arguments) = self.parser.parse_args(self.arguments)
@@ -300,6 +306,7 @@ Creates a pdf with a plot of all timers supplied.
       self.printHelp()
       sys.exit(2)
 
+    self.timestamp = _stringToTimestamp(options.timestamp)
     self.outputFileName = arguments[0]
     self.databaseName = arguments[1]
     self.names = arguments[2:]
@@ -327,17 +334,21 @@ Creates a pdf with a plot of all timers supplied.
 
     for record in cursor.execute("select * from %s" % (tableName)).fetchall():
       timestamp = _stringToTimestamp(record[0])
-      realTime = float(record[1])
-      cpuTime = float(record[2])
 
-      if not timestamp in realTimes:
-        assert not timestamp in cpuTimes
-        realTimes[timestamp] = [realTime]
-        cpuTimes[timestamp] = [cpuTime]
-      else:
-        assert timestamp in cpuTimes
-        realTimes[timestamp].append(realTime)
-        cpuTimes[timestamp].append(cpuTime)
+      print timestamp, self.timestamp
+
+      if not timestamp < self.timestamp:
+        realTime = float(record[1])
+        cpuTime = float(record[2])
+
+        if not timestamp in realTimes:
+          assert not timestamp in cpuTimes
+          realTimes[timestamp] = [realTime]
+          cpuTimes[timestamp] = [cpuTime]
+        else:
+          assert timestamp in cpuTimes
+          realTimes[timestamp].append(realTime)
+          cpuTimes[timestamp].append(cpuTime)
 
     # Convert lists to numpy arrays.
     for timestamp in realTimes:
@@ -388,10 +399,12 @@ Creates a pdf with a plot of all timers supplied.
 
     # Plot error bars.
     for name in self.names:
-      axis.errorbar(sorted(realTimes[name]), realTimesMean[name],
-        realTimesStd[name], fmt="o", color=lines[name].get_color())
-      axis.errorbar(sorted(cpuTimes[name]), cpuTimesMean[name],
-        cpuTimesStd[name], fmt="o", color=lines[name].get_color())
+      if len(realTimesMean[name]) > 0:
+        axis.errorbar(sorted(realTimes[name]), realTimesMean[name],
+          realTimesStd[name], fmt="o", color=lines[name].get_color())
+      if len(cpuTimesMean[name]) > 0:
+        axis.errorbar(sorted(cpuTimes[name]), cpuTimesMean[name],
+          cpuTimesStd[name], fmt="o", color=lines[name].get_color())
 
     legend = pyplot.figlegend([lines[name] for name in self.names], self.names,
       "upper right") # loc=(0.0, 0.0))
@@ -605,7 +618,7 @@ Queries the database and calculates some statistics for the timings passed in:
 """ % ("Statistic types are: %s" % ("|".join(["summary", "quotient", "timing"]))))
     # self.parser.add_option("--summary",
     #      help="print summary statistics")
-    self._addTimestampOption()
+    self._addTimestampOption(default="latest")
     self.parser.add_option("--type",
          dest="type",
          choices=["summary", "quotient", "timing"],
