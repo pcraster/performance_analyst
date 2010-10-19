@@ -8,6 +8,7 @@ History
 ======================
 - Added SQLiteTimerRunner.databaseIsConsistent.
 - Added support for tracking real time, besides CPU-time. This required a change in the database structure. See the :py:mod:`SQLiteTimerRunner's warnings <PerformanceAnalyst.SQLiteTimerRunner>`!
+- The `pa.py` ls command now orders the per-timer results by timestamp.
 
 0.0.5
 =====
