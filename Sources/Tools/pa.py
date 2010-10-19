@@ -330,8 +330,6 @@ Creates a pdf with a plot of all timers supplied.
 
     for record in cursor.execute("select * from %s" % (tableName)).fetchall():
       timestamp = _stringToTimestamp(record[0])
-
-      # CPU-time is in the third field. Skip real-time for now.
       realTime = float(record[1])
       cpuTime = float(record[2])
 
@@ -344,10 +342,12 @@ Creates a pdf with a plot of all timers supplied.
         realTimes[timestamp].append(realTime)
         cpuTimes[timestamp].append(cpuTime)
 
+    # Convert lists to numpy arrays.
     for timestamp in realTimes:
       realTimes[timestamp] = numpy.array(realTimes[timestamp])
       cpuTimes[timestamp] = numpy.array(cpuTimes[timestamp])
 
+    # Dicts, with per timestamp a numpy array with values.
     return realTimes, cpuTimes
 
   def run(self):
@@ -366,7 +366,6 @@ Creates a pdf with a plot of all timers supplied.
     cpuTimes, cpuTimesMean, cpuTimesStd = {}, {}, {}
 
     for name in self.names:
-      # Tuples of (real_time, cpu_time)
       realTimes[name], cpuTimes[name] = self._readData(cursor, name)
 
     lines = {}
@@ -386,8 +385,8 @@ Creates a pdf with a plot of all timers supplied.
     for name in self.names:
       # Store properties of plot with real-time values.
       lines[name] = axis.plot(sorted(realTimes[name]), realTimesMean[name],
-        "o-")[0]
-      axis.plot(sorted(cpuTimes[name]), cpuTimesMean[name], "o--",
+        "o--")[0]
+      axis.plot(sorted(cpuTimes[name]), cpuTimesMean[name], "o-",
         color=lines[name].get_color())
 
     # Plot error bars.
@@ -465,10 +464,12 @@ timers are provided.
           else:
             timestamps[record[0]] += 1
 
+        # Print name of timer.
         if len(timestamps) > 0:
           sys.stdout.write("%s\n" % (name))
 
-        for timestamp in timestamps:
+        # Print info per run.
+        for timestamp in sorted(timestamps.keys()):
           sys.stdout.write("%s\t%d\n" % (timestamp, timestamps[timestamp]))
 
     return 0
@@ -524,7 +525,12 @@ class _Rm(_Command):
          epilog="""
 Remove a timer case from the database.
 """)
-    self._addTimestampOption()
+    self.parser.add_option("--timestamp",
+         dest="timestamp",
+         help="timestamp to remove data for (timestamp, 'latest' or -1, -2, -3, etc)")
+    # self.parser.add_option("--before",
+    #      dest="before",
+    #      help="timestamp before which all data must be removed (timestamp)")
 
   def parseArguments(self):
     (options, arguments) = self.parser.parse_args(self.arguments)
@@ -534,11 +540,15 @@ Remove a timer case from the database.
       sys.exit(2)
 
     self.timestamps = options.timestamp
+    # self.before = options.before
     self.databaseName = arguments[0]
     self.names = arguments[1:]
 
   def run(self):
     self.parseArguments()
+
+    # print self.timestamps
+    # print self.before
 
     assert os.path.isfile(self.databaseName), \
          "Database %s does not exist" % (self.databaseName)
@@ -548,13 +558,19 @@ Remove a timer case from the database.
     self._updateDatabase(connection, cursor)
 
     self.names = self._parseTimerNames(cursor, self.names)
-    self.timestamps = self._parseTimestamps(cursor, self.names, self.timestamps)
 
-    for i in xrange(len(self.names)):
-      for timestamp in self.timestamps[i]:
-        tuple_ = (timestamp,)
-        cursor.execute("delete from %s where timestamp=?" % (self.names[i]),
-              tuple_)
+    if not self.timestamps is None:
+      self.timestamps = self._parseTimestamps(cursor, self.names,
+        self.timestamps)
+
+      for i in xrange(len(self.names)):
+        for timestamp in self.timestamps[i]:
+          tuple_ = (timestamp,)
+          cursor.execute("delete from %s where timestamp=?" % (self.names[i]),
+            tuple_)
+
+    # if not self.before is None:
+    #   pass
 
     # Remove whole table:
     # cursor.execute("drop table %s" % (self.names[i]))
