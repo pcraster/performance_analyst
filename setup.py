@@ -18,7 +18,7 @@ if platform.system() != "Windows":
 setup(
   install_requires=requirements,
   name = "PerformanceAnalyst",
-  version = "0.0.5",
+  version = "0.0.6",
   package_dir = {"": "Sources"},
   packages = find_packages(where="Sources"),
   # package_data = {"": ["Documentation/_build/html/*"]},
