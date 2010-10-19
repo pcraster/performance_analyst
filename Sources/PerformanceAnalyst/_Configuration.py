@@ -1,6 +1,6 @@
 versionMajor      = 0
 versionMinor      = 0
-versionPatchLevel = 6
+versionPatchLevel = 7
 
 
 
