@@ -132,8 +132,6 @@ class SQLiteTimerRunner(TimerRunner.TimerRunner):
 
     connection.commit()
 
-    assert cls.version(cursor) == _Configuration.versionAsInteger()
-
   def __init__(self,
     databaseName): # ="Timings"):
     """
