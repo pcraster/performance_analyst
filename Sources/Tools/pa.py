@@ -614,10 +614,13 @@ Queries the database and calculates some statistics for the timings passed in:
     timing of the timer case.
     If more than one timer case is passed, than quotients are calculated
     between the first timer case and all subsequent timer cases.
+    Quotients are calculated in pairs: one for the real-time timings
+    and one for the cpu-timings. These values are printed in that order.
 
   timing
     Print the timing of each timer case, as found in the database. Nothing is
-    calculated in this case.
+    calculated in this case. For each timer case, the real-time and cpu-time
+    timings are printed, in that order.
 """ % ("Statistic types are: %s" % ("|".join(["summary", "quotient", "timing"]))))
     # self.parser.add_option("--summary",
     #      help="print summary statistics")
