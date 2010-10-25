@@ -665,24 +665,33 @@ Queries the database and calculates some statistics for the timings passed in:
     return realTimes, cpuTimes
 
   def _writeSummaryStatistics(self,
-         cursor):
+    cursor):
     for i in range(len(self.names)):
       assert len(self.timestamps[i]) == 1
-      realTimes, cpuTimes = self._timings(cursor, self.names[i],
+      realTimings, cpuTimings = self._timings(cursor, self.names[i],
         self.timestamps[i][0])
-      timings = cpuTimes
-      assert len(timings) > 0
+      assert len(realTimings) > 0
+      assert len(cpuTimings) > 0
 
-      mean = numpy.mean(timings, dtype=numpy.float64)
-      std = numpy.std(timings, dtype=numpy.float64)
-      cv = std / mean
+      realTimingsMean = numpy.mean(realTimings, dtype=numpy.float64)
+      cpuTimingsMean = numpy.mean(cpuTimings, dtype=numpy.float64)
+      realTimingsStd = numpy.std(realTimings, dtype=numpy.float64)
+      cpuTimingsStd = numpy.std(cpuTimings, dtype=numpy.float64)
+      realCV = realTimingsStd / realTimingsMean
+      cpuCV = cpuTimingsStd / cpuTimingsMean
 
-      sys.stdout.write("%s (%s):\n" % (self.names[i], self.timestamps[i]))
-      sys.stdout.write("min : %g\n" % (numpy.min(timings)))
-      sys.stdout.write("max : %g\n" % (numpy.max(timings)))
-      sys.stdout.write("mean: %g\n" % (mean))
-      sys.stdout.write("std : %g\n" % (std))
-      sys.stdout.write("cv  : %g\n" % (cv))
+      sys.stdout.write("%s (%s):\n" % (
+        self.names[i], self.timestamps[i]))
+      sys.stdout.write("min : %g %g\n" % (
+        numpy.min(realTimings), numpy.min(cpuTimings)))
+      sys.stdout.write("max : %g %g\n" % (
+        numpy.max(realTimings), numpy.max(cpuTimings)))
+      sys.stdout.write("mean: %g %g\n" % (
+        realTimingsMean, cpuTimingsMean))
+      sys.stdout.write("std : %g %g\n" % (
+        realTimingsStd, cpuTimingsStd))
+      sys.stdout.write("cv  : %g %g\n" % (
+        realCV, cpuCV))
 
   def _writeTemporalQuotient(self,
          cursor):
