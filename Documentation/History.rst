@@ -6,7 +6,7 @@ History
 
 0.0.7 (in development)
 ======================
--
+- The `pa.py stat` command now also prints the real-time timings into account. The format of the output is changed a bit.
 
 0.0.6
 =====
