@@ -653,16 +653,24 @@ Queries the database and calculates some statistics for the timings passed in:
          cursor,
          name,
          timestamp):
+    realTimes = []
+    cpuTimes = []
     tuple_ = (timestamp,)
-    records = cursor.execute("SELECT cpu_time FROM %s WHERE timestamp=?" % (
-         name), tuple_).fetchall()
-    return [record[0] for record in records]
+    for record in cursor.execute(
+      "SELECT real_time, cpu_time FROM %s WHERE timestamp=?" % (
+        name), tuple_).fetchall():
+      realTimes.append(record[0])
+      cpuTimes.append(record[1])
+
+    return realTimes, cpuTimes
 
   def _writeSummaryStatistics(self,
          cursor):
     for i in range(len(self.names)):
       assert len(self.timestamps[i]) == 1
-      timings = self._timings(cursor, self.names[i], self.timestamps[i][0])
+      realTimes, cpuTimes = self._timings(cursor, self.names[i],
+        self.timestamps[i][0])
+      timings = cpuTimes
       assert len(timings) > 0
 
       mean = numpy.mean(timings, dtype=numpy.float64)
@@ -678,45 +686,41 @@ Queries the database and calculates some statistics for the timings passed in:
 
   def _writeTemporalQuotient(self,
          cursor):
-    assert len(self.names) == 1
+    assert len(self.names) == 1, self.names
 
-    # if len(self.names) == 0:
-    #   self.names = [record[1] for record in cursor.execute(
-    #      "select * from sqlite_master").fetchall()]
+    name = self.names[0]
+    timestamps = self.timestamps[0]
 
-    for i in range(len(self.names)):
-      if len(self.timestamps[i]) == 1:
-        # Append the previous timestamp.
-        index = self._indexOfTimestamp(cursor, self.names[i],
-              self.timestamps[i][0]) - 1
-        self.timestamps[i].append(self._timestampByIndex(cursor, self.names[i],
-              index))
+    if len(timestamps) == 1:
+      # Append the previous timestamp.
+      index = self._indexOfTimestamp(cursor, name, timestamps[0]) - 1
+      timestamps.append(self._timestampByIndex(cursor, name, index))
 
-    for i in range(len(self.names)):
-      # List of lowest timings for each timestamp.
-      min = [numpy.min(self._timings(cursor, self.names[i],
-           self.timestamps[i][j])) for j in range(2)]
-      assert len(min) == 2
-      assert min[1] != 0.0, "%s %s" % (self.names[i], self.timestamps[i])
-      quotient = min[0] / min[1]
-      sys.stdout.write("%g\n" % (quotient))
+    realTimings1, cpuTimings1 = self._timings(cursor, name, timestamps[0])
+    realTiming1, cpuTiming1 = numpy.min(realTimings1), numpy.min(cpuTimings1)
+    realTimings2, cpuTimings2 = self._timings(cursor, name, timestamps[1])
+    realTiming2, cpuTiming2 = numpy.min(realTimings2), numpy.min(cpuTimings2)
+
+    sys.stdout.write("{realTimingQuotient} {cpuTimingQuotient}\n".format(
+      realTimingQuotient=realTiming1 / realTiming2,
+      cpuTimingQuotient=cpuTiming1 / cpuTiming2))
 
   def _writeQuotient2(self,
          cursor):
     assert len(self.names) > 1, "At least two names required for quotient"
-    for i in range(len(self.names)):
+
+    assert len(self.timestamps[0]) == 1
+    realTimings, cpuTimings = self._timings(cursor, self.names[0],
+      self.timestamps[0][0])
+    realTiming, cpuTiming = numpy.min(realTimings), numpy.min(cpuTimings)
+
+    for i in range(1, len(self.names)):
       assert len(self.timestamps[i]) == 1
-
-    # List of lowest timings for each name in self.names.
-    min = [numpy.min(self._timings(cursor, self.names[i],
-         self.timestamps[i][0])) for i in range(len(self.names))]
-
-    # List of quotients of first timing and subsequent timings.
-    quotients = [min[0] / min[i] for i in range(1, len(self.names))]
-
-    # Write comma-seperated list of quotients.
-    sys.stdout.write(", ".join(["%g" % (quotients[i]) for i in \
-         range(len(quotients))]))
+      realTimings, cpuTimings = self._timings(cursor, self.names[i],
+        self.timestamps[i][0])
+      sys.stdout.write("{realTimingQuotient} {cpuTimingQuotient}\n".format(
+        realTimingQuotient=realTiming / numpy.min(realTimings),
+        cpuTimingQuotient=cpuTiming / numpy.min(cpuTimings)))
 
   def _writeQuotient(self,
          cursor):
@@ -727,17 +731,13 @@ Queries the database and calculates some statistics for the timings passed in:
 
   def _writeTiming(self,
          cursor):
-    assert len(self.names) > 0
     for i in range(len(self.names)):
       assert len(self.timestamps[i]) == 1
-
-    # List of lowest timings for each name in self.names.
-    timings = [numpy.min(self._timings(cursor, self.names[i],
-         self.timestamps[i][0])) for i in range(len(self.names))]
-
-    # Write comma-seperated list of timings.
-    sys.stdout.write("%s\n" % (", ".join(["%g" % (timings[i]) for i in \
-         range(len(timings))])))
+      realTimings, cpuTimings = self._timings(cursor, self.names[i],
+        self.timestamps[i][0])
+      sys.stdout.write("{realTiming} {cpuTiming}\n".format(
+        realTiming=numpy.min(realTimings),
+        cpuTiming=numpy.min(cpuTimings)))
 
   def run(self):
     self.parseArguments()
