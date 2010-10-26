@@ -1,35 +1,18 @@
-import platform
-
-# http://nightly.ziade.org/distribute_setup.py
-from distribute_setup import use_setuptools
-use_setuptools()
-
-from setuptools import setup, find_packages
-
-requirements = []
-
-if platform.system() != "Windows":
-  requirements = [
-    "psutil>=0.1.3",
-    # "numpy>=1.1",
-    # "matplotlib>=1.0.0",
-  ]
+from distutils.core import setup
 
 setup(
-  install_requires=requirements,
   name = "PerformanceAnalyst",
   version = "0.0.8",
   package_dir = {"": "Sources"},
-  packages = find_packages(where="Sources"),
-  # package_data = {"": ["Documentation/_build/html/*"]},
+  packages = ["PerformanceAnalyst"],
   scripts=["Sources/Tools/pa.py"],
   author = "Kor de Jong",
   author_email = "kdejong@geo.uu.nl",
-  # description = "xxx",
-  # long_description = "xxx",
-  license = "MIT, http://www.opensource.org/licenses/mit-license.html",
-  # keywords = ["xxx xxx xxx"],
+  description =
+    "Software for measuring the performance of snippets of Python code and "
+    "storing the results in a database for postprocessing.",
+  long_description = file("README.txt").read(),
+  license = "LICENSE.txt",
   url = "http://pcraster.sourceforge.net",
-  zip_safe = True,
 )
 

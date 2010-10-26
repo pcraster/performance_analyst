@@ -4,8 +4,12 @@
 History
 *******
 
-0.0.8 (in development)
+0.0.9 (in development)
 ======================
+
+0.0.8
+=====
+- The package is now distributed as a source distribution that can be installed and uninstalled using pip. See the :ref:`Installation page <installation>` for more information.
 
 0.0.7
 =====

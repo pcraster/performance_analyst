@@ -1,4 +1,0 @@
-0.0.3
-- The pa.py script is not part of the binary distribution.
-
-0.0.2, summer 2010 -- Initial release.

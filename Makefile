@@ -11,25 +11,29 @@ doc docs:
 test tests:
 	make -C Tests all
 
-egg: setup.py
-	python setup.py --quiet bdist_egg
+# Open all files containing the version number.
+bumpVersion:
+	vi Makefile setup.py Documentation/conf.py Documentation/History.rst Sources/PerformanceAnalyst/_Configuration.py
 
-test_dist:
+# Create PerformanceAnalyst-<version>.{tar.gz,zip}
+sdist: setup.py
+	python setup.py --quiet sdist --formats=gztar,zip
+
+dist: docs sdist
+	cd Documentation/_build && zip --quiet --recurse-paths ../../dist/PerformanceAnalyst-${version}-doc.zip html
+	ls -ltr dist/PerformanceAnalyst-${version}*
+
+# Install the package in a sandbox and import it.
+test_dist: dist
 	rm -fr ${virtualPythonDir}
 	virtualenv --no-site-packages --quiet ${virtualPythonDir}
-	make egg
-	${virtualPythonBinDir}/easy_install --quiet dist/PerformanceAnalyst-${version}-py${pythonVersion}.egg
+	make sdist
+	${virtualPythonBinDir}/pip install --quiet psutil
+	${virtualPythonBinDir}/pip install --no-index --find-links=file://`pwd`/dist PerformanceAnalyst==${version}
 	@echo "*******************************************************************"
 	@echo "* Installation succeeded if the next command prints a Python list *"
 	@echo "*******************************************************************"
 	${virtualPythonBinDir}/python -c "import PerformanceAnalyst; print dir(PerformanceAnalyst)"
-
-dist: egg test_dist doc
-	cd Documentation/_build && zip --recurse-paths ../../dist/PerformanceAnalyst-${version}-doc.zip html
-	ls -ltr dist/PerformanceAnalyst-${version}-py${pythonVersion}.egg dist/PerformanceAnalyst-${version}-doc.zip
-
-bumpVersion:
-	vi Makefile setup.py Documentation/conf.py Sources/PerformanceAnalyst/_Configuration.py
 
 clean:
 	make -C Sources $@
