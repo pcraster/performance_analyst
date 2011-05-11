@@ -21,6 +21,7 @@ Contents:
    Tutorial
    GeneratingTimerCases
    History
+   Todo
 
 Source code documentation:
 
