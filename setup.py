@@ -2,7 +2,7 @@ from distutils.core import setup
 
 setup(
   name = "PerformanceAnalyst",
-  version = "0.0.8",
+  version = "0.0.9",
   package_dir = {"": "Sources"},
   packages = ["PerformanceAnalyst"],
   scripts=["Sources/Tools/pa.py"],
