@@ -29,7 +29,7 @@ test_dist: dist
 	virtualenv --no-site-packages --quiet ${virtualPythonDir}
 	make sdist
 	${virtualPythonBinDir}/pip install --quiet psutil
-	${virtualPythonBinDir}/pip install --no-index --find-links=file://`pwd`/dist PerformanceAnalyst==${version}
+	${virtualPythonBinDir}/pip install dist/PerformanceAnalyst-${version}.zip
 	@echo "*******************************************************************"
 	@echo "* Installation succeeded if the next command prints a Python list *"
 	@echo "*******************************************************************"
