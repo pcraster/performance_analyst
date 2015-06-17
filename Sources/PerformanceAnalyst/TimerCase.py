@@ -95,13 +95,13 @@ class TimerCase(object):
     process = psutil.Process(os.getpid())
 
     for i in range(getattr(self.method, "repeat", 1)):
-      userCPUTime, systemCPUTime = process.get_cpu_times()
+      userCPUTime, systemCPUTime = process.cpu_times()
       startRealTime = datetime.datetime.now()
       startCPUTime = userCPUTime + systemCPUTime
 
       self.method()
 
-      userCPUTime, systemCPUTime = process.get_cpu_times()
+      userCPUTime, systemCPUTime = process.cpu_times()
       endRealTime = datetime.datetime.now()
       endCPUTime = userCPUTime + systemCPUTime
 
