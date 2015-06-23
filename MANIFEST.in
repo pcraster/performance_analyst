@@ -1,2 +1,2 @@
 include *.txt
-recursive-include Documentation *.rst
+recursive-include documentation *.rst

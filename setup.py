@@ -1,18 +1,18 @@
 from distutils.core import setup
 
-setup(
-  name = "PerformanceAnalyst",
-  version = "0.0.9",
-  package_dir = {"": "Sources"},
-  packages = ["PerformanceAnalyst"],
-  scripts=["Sources/Tools/pa.py"],
-  author = "Kor de Jong",
-  author_email = "kdejong@geo.uu.nl",
-  description =
-    "Software for measuring the performance of snippets of Python code and "
-    "storing the results in a database for postprocessing.",
-  long_description = file("README.txt").read(),
-  license = "LICENSE.txt",
-  url = "http://pcraster.sourceforge.net",
-)
 
+setup(
+    name = "performance_analyst",
+    version = "0.0.9",
+    package_dir = {"": "source"},
+    packages = ["performance_analyst"],
+    scripts=["source/tool/pa.py"],
+    author = "Kor de Jong",
+    author_email = "info@pcraster.eu",
+    description =
+        "Software for measuring the performance of snippets of Python code "
+        "and storing the results in a database for postprocessing.",
+    long_description = file("README.md").read(),
+    license = "LICENSE.txt",
+    url = "https://github.com/pcraster/performance_analyst",
+)
