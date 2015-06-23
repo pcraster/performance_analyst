@@ -3,55 +3,60 @@
    :undoc-members:
    :show-inheritance:
 
-.. automodule:: performance_analyst.TimerCase
+.. automodule:: performance_analyst.configuration
    :members:
    :undoc-members:
    :show-inheritance:
 
-.. automodule:: performance_analyst.TimerSuite
+.. automodule:: performance_analyst.timer_case
    :members:
    :undoc-members:
    :show-inheritance:
 
-.. automodule:: performance_analyst.TimerLoader
+.. automodule:: performance_analyst.timer_suite
    :members:
    :undoc-members:
    :show-inheritance:
 
-.. automodule:: performance_analyst.TimerRunner
+.. automodule:: performance_analyst.timer_loader
    :members:
    :undoc-members:
    :show-inheritance:
 
-.. automodule:: performance_analyst.CompositeTimerRunner
+.. automodule:: performance_analyst.timer_runner
    :members:
    :undoc-members:
    :show-inheritance:
 
-.. inheritance-diagram:: performance_analyst.CompositeTimerRunner
-
-.. automodule:: performance_analyst.StreamTimerRunner
+.. automodule:: performance_analyst.composite_timer_runner
    :members:
    :undoc-members:
    :show-inheritance:
 
-.. inheritance-diagram:: performance_analyst.StreamTimerRunner
+.. inheritance-diagram:: performance_analyst.composite_timer_runner
 
-.. automodule:: performance_analyst.ProgressTimerRunner
+.. automodule:: performance_analyst.stream_timer_runner
    :members:
    :undoc-members:
    :show-inheritance:
 
-.. inheritance-diagram:: performance_analyst.ProgressTimerRunner
+.. inheritance-diagram:: performance_analyst.stream_timer_runner
 
-.. automodule:: performance_analyst.SQLiteTimerRunner
+.. automodule:: performance_analyst.progress_timer_runner
    :members:
    :undoc-members:
    :show-inheritance:
 
-.. inheritance-diagram:: performance_analyst.SQLiteTimerRunner
+.. inheritance-diagram:: performance_analyst.progress_timer_runner
 
-.. automodule:: performance_analyst.TimerResult
+.. automodule:: performance_analyst.sqlite_timer_runner
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. inheritance-diagram:: performance_analyst.sqlite_timer_runner
+
+.. automodule:: performance_analyst.timer_result
    :members:
    :undoc-members:
    :show-inheritance:
