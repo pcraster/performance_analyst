@@ -1,6 +1,10 @@
 # Changes
 
-## 0.0.9 (in development)
+## 0.0.9
+- Updated code to conform to PEP8.
+- Minor refactorings. Renamed files, reorganized files, updated documentation,
+  ...
+- Moved project from SourceForge to GitHub.
 
 ## 0.0.8
 - The package is now distributed as a source distribution that can be installed and uninstalled using pip. See the [Installation page](INSTALL.md) for more information.
@@ -10,14 +14,14 @@
 
 ## 0.0.6
 - Added SQLiteTimerRunner.databaseIsConsistent.
-- Added support for tracking real time, besides CPU-time. This required a change in the database structure. See the SQLiteTimerRunner's warnings (`PerformanceAnalyst.SQLiteTimerRunner`)!
+- Added support for tracking real time, besides CPU-time. This required a change in the database structure. See the SQLiteTimerRunner's warnings (`performance_analyst.SQLiteTimerRunner`)!
 - The `pa.py ls` command now orders the per-timer results by timestamp.
 - The `pa.py plot` command not has a `timestamp` option which is used to select timestamps to use for plot. Data created before this timestamp is skipped.
 
 ## 0.0.5
 - Added TimerLoader.loadTimersFromTimerCase.
 - Fixed bug in documentation generation.
-- On Windows, installation of the PerformanceAnalyst won't install psutil and matplotlib anymore, since that doesn't work. The user has to install the requirements separately.
+- On Windows, installation of the Performance Analyst won't install psutil and matplotlib anymore, since that doesn't work. The user has to install the requirements separately.
 
 ## 0.0.4
 - Removed bug in TextTimerRunner.

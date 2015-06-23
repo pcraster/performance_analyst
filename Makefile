@@ -19,7 +19,10 @@ bump_version:
 sdist: setup.py
 	python setup.py --quiet sdist --formats=gztar,zip
 
-dist: docs sdist
+wheel: setup.py
+	python setup.py --quiet bdist_wheel
+
+dist: docs wheel
 	cd documentation/_build && zip --quiet --recurse-paths ../../dist/performance_analyst-${version}-doc.zip html
 	ls -ltr dist/performance_analyst-${version}*
 
@@ -27,9 +30,8 @@ dist: docs sdist
 test_dist: dist
 	rm -fr ${virtual_python_dir}
 	virtualenv --no-site-packages --quiet ${virtual_python_dir}
-	make sdist
-	${virtual_python_bin_dir}/pip install --quiet psutil
-	${virtual_python_bin_dir}/pip install dist/performance_analyst-${version}.zip
+	make wheel
+	${virtual_python_bin_dir}/pip install --find-links=dist performance_analyst
 	@echo "*******************************************************************"
 	@echo "* Installation succeeded if the next command prints a Python list *"
 	@echo "*******************************************************************"
