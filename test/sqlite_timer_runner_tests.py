@@ -19,9 +19,8 @@ class SQLiteTimerRunnerTests(unittest.TestCase):
 
     def test001(self):
         """Test running the example timer case"""
-        runner = pa.sqlite_timer_runner.SQLiteTimerRunner(database_name=
-            self.database_name)
-        result = runner.run(pa.timer_suite.TimerSuite([
+        runner = pa.SQLiteTimerRunner(database_name=self.database_name)
+        result = runner.run(pa.TimerSuite([
             my_module_timers.MyModuleTimers("time_a"),
             my_module_timers.MyModuleTimers("time_b"),
             my_module_timers.MyModuleTimers("time_c"),
@@ -71,11 +70,10 @@ class SQLiteTimerRunnerTests(unittest.TestCase):
         cursor = connection.cursor()
 
         # Make sure we can run the timers again using the same database.
-        result = runner.run(pa.timer_suite.TimerSuite([
-            pa.timer_suite.TimerSuite([
-                my_module_timers.MyModuleTimers("time_a"),
-                my_module_timers.MyModuleTimers("time_b"),
-                my_module_timers.MyModuleTimers("time_c"),
+        result = runner.run(pa.TimerSuite([pa.TimerSuite([
+            my_module_timers.MyModuleTimers("time_a"),
+            my_module_timers.MyModuleTimers("time_b"),
+            my_module_timers.MyModuleTimers("time_c"),
         ])]))
 
         self.assert_(runner.database_is_consistent())
@@ -93,11 +91,9 @@ class SQLiteTimerRunnerTests(unittest.TestCase):
 
     def test002(self):
         """Test running a failing timer case"""
-        runner = pa.sqlite_timer_runner.SQLiteTimerRunner(database_name=
-            self.database_name)
+        runner = pa.SQLiteTimerRunner(database_name=self.database_name)
 
-        self.assertRaises(AssertionError, runner.run,
-                pa.timer_suite.TimerSuite([
+        self.assertRaises(AssertionError, runner.run, pa.TimerSuite([
             my_module_timers.MyModuleTimers("timeRaiseException"),
         ]))
 

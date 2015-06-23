@@ -1,6 +1,6 @@
 import datetime
 import unittest
-from performance_analyst import timer_result, timer_suite
+from performance_analyst import TimerResult, TimerSuite
 import my_module_timers
 
 
@@ -8,7 +8,7 @@ class TimerSuiteTests(unittest.TestCase):
 
     def test001(self):
         """Test running an example timer suite"""
-        suite = timer_suite.TimerSuite([
+        suite = TimerSuite([
             my_module_timers.MyModuleTimers("time_a"),
             my_module_timers.MyModuleTimers("time_b"),
             my_module_timers.MyModuleTimers("time_c"),
@@ -18,7 +18,7 @@ class TimerSuiteTests(unittest.TestCase):
         self.assertEqual(suite[1].id(), "MyModuleTimers.time_b")
         self.assertEqual(suite[2].id(), "MyModuleTimers.time_c")
 
-        result = timer_result.TimerResult()
+        result = TimerResult()
         suite.run(result)
 
         self.assertEqual(len(result), 3)

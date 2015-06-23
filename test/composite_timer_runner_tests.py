@@ -21,17 +21,15 @@ class CompositeTimerRunnerTests(unittest.TestCase):
 
   def test001(self):
       """Test running the example timer case"""
-      sqlite_runner = pa.sqlite_timer_runner.SQLiteTimerRunner(
-          database_name=self.database_name)
+      sqlite_runner = pa.SQLiteTimerRunner(database_name=self.database_name)
       stream = StringIO.StringIO()
-      stream_runner = pa.stream_timer_runner.StreamTimerRunner(stream=stream)
-      runner = pa.composite_timer_runner.CompositeTimerRunner([sqlite_runner,
-          stream_runner])
+      stream_runner = pa.StreamTimerRunner(stream=stream)
+      runner = pa.CompositeTimerRunner([sqlite_runner, stream_runner])
 
       # Make sure the database doesn't exist yet.
       self.assert_(not os.path.isfile(self.database_name))
 
-      result = runner.run(pa.timer_suite.TimerSuite([
+      result = runner.run(pa.TimerSuite([
           my_module_timers.MyModuleTimers("time_a"),
           my_module_timers.MyModuleTimers("time_b"),
           my_module_timers.MyModuleTimers("time_c"),

@@ -6,9 +6,9 @@ to run a collection of *timer cases* aggregated in *timer suites*. a *timer runn
 ```python
 import performance_analyst as pa
 
-loader = pa.TimerLoader.TimerLoader()
+loader = pa.TimerLoader()
 
-pa.SQLiteTimerRunner.SQLiteTimerRunner(
+pa.SQLiteTimerRunner(
         database_name="my_database.sqlite3").run(
     loader.load_timers_from_name("my_module_timings.MyModuleTimings"),
     # ... More timer suites ...
@@ -27,12 +27,12 @@ import time
 from performance_analyst import TimerCase
 
 
-class MyModuleTimings(TimerCase.TimerCase):
+class MyModuleTimings(TimerCase):
 
-    def setUp(self):
+    def set_up(self):
         pass
 
-    def tearDown(self):
+    def tear_down(self):
         pass
 
     def more_or_less(self,
@@ -40,8 +40,8 @@ class MyModuleTimings(TimerCase.TimerCase):
         return random.gauss(value, 0.25)
 
     def sleep_some_seconds(self,
-            nrSeconds):
-        time.sleep(self.more_or_less(nrSeconds))
+            nr_seconds):
+        time.sleep(self.more_or_less(nr_seconds))
 
     def time_c(self):
         self.sleep_some_seconds(3.0)

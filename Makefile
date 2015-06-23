@@ -1,7 +1,7 @@
-version            := 0.0.9
-pythonVersion      := ${shell python -c 'import sys; print "{0}.{1}".format(*sys.version_info[:2])'}
-virtualPythonDir   := bla
-virtualPythonBinDir := ${shell python -c 'import sys; print "${virtualPythonDir}/" + ("Scripts" if sys.platform == "win32" else "bin")'}
+version := 0.0.9
+python_version := ${shell python -c 'import sys; print "{0}.{1}".format(*sys.version_info[:2])'}
+virtual_python_dir := bla
+virtual_python_bin_dir := ${shell python -c 'import sys; print "${virtual_python_dir}/" + ("Scripts" if sys.platform == "win32" else "bin")'}
 
 all: docs tests
 
@@ -12,8 +12,8 @@ test tests:
 	make -C test all
 
 # Open all files containing the version number.
-bumpVersion:
-	vi Makefile setup.py documentation/conf.py documentation/History.rst source/performance_analyst/_Configuration.py
+bump_version:
+	vi Makefile setup.py documentation/conf.py CHANGES.md source/performance_analyst/configuration.py
 
 # Create performance_analyst-<version>.{tar.gz,zip}
 sdist: setup.py
@@ -25,19 +25,18 @@ dist: docs sdist
 
 # Install the package in a sandbox and import it.
 test_dist: dist
-	rm -fr ${virtualPythonDir}
-	virtualenv --no-site-packages --quiet ${virtualPythonDir}
+	rm -fr ${virtual_python_dir}
+	virtualenv --no-site-packages --quiet ${virtual_python_dir}
 	make sdist
-	${virtualPythonBinDir}/pip install --quiet psutil
-	${virtualPythonBinDir}/pip install dist/performance_analyst-${version}.zip
+	${virtual_python_bin_dir}/pip install --quiet psutil
+	${virtual_python_bin_dir}/pip install dist/performance_analyst-${version}.zip
 	@echo "*******************************************************************"
 	@echo "* Installation succeeded if the next command prints a Python list *"
 	@echo "*******************************************************************"
-	${virtualPythonBinDir}/python -c "import performance_analyst; print dir(performance_analyst)"
+	${virtual_python_bin_dir}/python -c "import performance_analyst; print dir(performance_analyst)"
 
 clean:
 	make -C source $@
 	make -C test $@
-	rm -fr ${virtualPythonDir}
+	rm -fr ${virtual_python_dir}
 	find source -name "*.pyc" | xargs --no-run-if-empty rm -f
-

@@ -9,8 +9,8 @@ class ProgressTimerRunnerTests(unittest.TestCase):
     def test001(self):
       """Test running the example timer case"""
       stream = StringIO.StringIO()
-      runner = pa.progress_timer_runner.ProgressTimerRunner(stream=stream)
-      result = runner.run(pa.timer_suite.TimerSuite([
+      runner = pa.ProgressTimerRunner(stream=stream)
+      result = runner.run(pa.TimerSuite([
           my_module_timers.MyModuleTimers("time_a"),
           my_module_timers.MyModuleTimers("time_b"),
           my_module_timers.MyModuleTimers("time_c"),
