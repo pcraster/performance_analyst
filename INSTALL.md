@@ -1,26 +1,27 @@
 # Installation
-The PerformanceAnalyst is distributed as a source distribution. The
+The Performance Analyst is distributed as a so called *wheel* file. The
 [pip command](http://pip.openplans.org) can be used to install the
 distribution-file like this:
 
 ```bash
-pip install --no-index --find-links=file://<path> performance_analyst==<version>
+pip install --find-links=file://<path> performance_analyst==<version>
 ```
 
 **path**: This is the *absolute* path name of the directory containing
 the source distribution.
 
-**version**: This is the version of the PerformanceAnalyst you want
+**version**: This is the version of the Performance Analyst you want
 to install. Supplying a version is optional and only necessary if you
-want to install a specific version of the PerformanceAnalyst instead of
+want to install a specific version of the Performance Analyst instead of
 the latest.
-
-The `--no-index` option is optional, but speeds up installation because
-pip won't probe online package indexes.
 
 The `--find-links` argument is necessary, because pip normally downloads
 packages from the [Python Package Index](http://pypi.python.org/pypi),
-and the PerformanceAnalyst is not available there.
+and the Performance Analyst is not available there.
+
+During the installation, some additional dependencies may be downloaded
+from the Python Package Index, depending on whether or not they are
+already installed.
 
 Pip doesn't understand Windows share names, so you need to copy the
 distribution file to your local computer if it is located on a share.
@@ -35,14 +36,17 @@ pip install --find-links=file://`cygpath -w \`pwd\`` performance_analyst
 
 
 ## Requirements
-The PerformanceAnalyst code uses two other packages which need to be installed seperately, depending on the platform:
+The Performance Analyst code makes use of other packages. Unless they
+are already installed, pip will download these when the Performance
+Analyst is installed.
 
 - Matplotlib: http://matplotlib.sourceforge.net
+- Numpy: http://www.numpy.org
 - psutil: http://code.google.com/p/psutil
 
 
 ## Uninstalling
-The PerformanceAnalyst can be uninstalled like this:
+The Performance Analyst can be uninstalled like this:
 
 ```bash
 pip uninstall performance_analyst
