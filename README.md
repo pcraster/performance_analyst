@@ -27,7 +27,7 @@ Further info:
 - [Installation](documentation/install.md)
 - [Quick start](documentation/quick_start.md)
 - [Generating timer cases](documentation/generating_timer_cases.md)
-- [History](documentation/history.md)
+- [Changes](changes.md)
 
 
 
