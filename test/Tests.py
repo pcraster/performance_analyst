@@ -4,7 +4,7 @@ import unittest
 
 
 
-sys.path = ["../Sources"] + sys.path
+sys.path = ["../source"] + sys.path
 
 logging.basicConfig(
   level=logging.DEBUG,

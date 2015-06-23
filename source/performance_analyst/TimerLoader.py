@@ -19,7 +19,7 @@ class TimerLoader(object):
   def loadTimersFromName(self,
     name):
     """
-    Load timer cases from a module with a :class:`PerformanceAnalyst.TimerCase.TimerCase` sub-class.
+    Load timer cases from a module with a :class:`performance_analyst.TimerCase.TimerCase` sub-class.
 
     `name`
       Name of module, formatted as `<module>.<TimerCase sub-class>`.
@@ -33,7 +33,7 @@ class TimerLoader(object):
 
     So, in case the TimerCase sub-class has three member functions, named
     `timeA`, `timeB` and `timeC`, than this method creates a
-    :class:`timer suite <PerformanceAnalyst.TimerSuite.TimerSuite>` containing
+    :class:`timer suite <performance_analyst.TimerSuite.TimerSuite>` containing
     three TimerCase sub-class instances.
     """
     names = name.split(".")

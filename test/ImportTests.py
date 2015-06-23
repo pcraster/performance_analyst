@@ -1,6 +1,6 @@
 import unittest
 
-import PerformanceAnalyst as pa
+import performance_analyst as pa
 
 
 

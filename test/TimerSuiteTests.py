@@ -1,7 +1,7 @@
 import datetime
 import unittest
 
-from PerformanceAnalyst import TimerResult, TimerSuite
+from performance_analyst import TimerResult, TimerSuite
 
 import MyModuleTimers
 

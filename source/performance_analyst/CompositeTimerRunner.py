@@ -16,9 +16,9 @@ class CompositeTimerRunner(TimerRunner.TimerRunner, list):
   create timer runners (`leaves` in the pattern's lingo) that, for example,
   write their results to a database *and* will print status information
   to a stream. Without this class that is not possible, since
-  :class:`PerformanceAnalyst.SQLiteTimerRunner.SQLiteTimerRunner` class
+  :class:`performance_analyst.SQLiteTimerRunner.SQLiteTimerRunner` class
   instances don't print status information to a stream, and
-  :class:`PerformanceAnalyst.StreamTimerRunner.StreamTimerRunner` class
+  :class:`performance_analyst.StreamTimerRunner.StreamTimerRunner` class
   instances don't write results to a database.
 
   This class is implemented in terms of a list, so you can use the list's

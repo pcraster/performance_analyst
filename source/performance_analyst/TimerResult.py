@@ -11,7 +11,7 @@ class TimerResult(dict):
   Dictionary with the results of running timer cases.
 
   The key of the dictionary is the :meth:`id of the timer cases
-  <PerformanceAnalyst.TimerCase.TimerCase.id>`.
+  <performance_analyst.TimerCase.TimerCase.id>`.
 
   The value that is stored for each key is a list with the folowing items::
 
@@ -19,7 +19,7 @@ class TimerResult(dict):
 
   The first item is the time stamp of the moment the timer case finished. The
   second item is the description or the
-  :meth:`timer case's id <PerformanceAnalyst.TimerCase.TimerCase.id>` if no
+  :meth:`timer case's id <performance_analyst.TimerCase.TimerCase.id>` if no
   description was found. The third item is a list of timings, one tuple of
   (real_time, cpu_time), for each time the timer case was run. Timings are in
   seconds.

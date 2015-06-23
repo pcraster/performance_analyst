@@ -1,6 +1,6 @@
 import unittest
 
-from PerformanceAnalyst import TimerLoader
+from performance_analyst import TimerLoader
 
 
 

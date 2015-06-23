@@ -2,7 +2,7 @@ import math
 # import random
 # import time
 
-from PerformanceAnalyst import TimerCase
+from performance_analyst import TimerCase
 
 
 

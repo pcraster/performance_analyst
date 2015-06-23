@@ -6,22 +6,22 @@ virtualPythonBinDir := ${shell python -c 'import sys; print "${virtualPythonDir}
 all: docs tests
 
 doc docs:
-	make -C Documentation clean html
+	make -C documentation clean html
 
 test tests:
-	make -C Tests all
+	make -C test all
 
 # Open all files containing the version number.
 bumpVersion:
-	vi Makefile setup.py Documentation/conf.py Documentation/History.rst Sources/PerformanceAnalyst/_Configuration.py
+	vi Makefile setup.py documentation/conf.py documentation/History.rst source/performance_analyst/_Configuration.py
 
-# Create PerformanceAnalyst-<version>.{tar.gz,zip}
+# Create performance_analyst-<version>.{tar.gz,zip}
 sdist: setup.py
 	python setup.py --quiet sdist --formats=gztar,zip
 
 dist: docs sdist
-	cd Documentation/_build && zip --quiet --recurse-paths ../../dist/PerformanceAnalyst-${version}-doc.zip html
-	ls -ltr dist/PerformanceAnalyst-${version}*
+	cd documentation/_build && zip --quiet --recurse-paths ../../dist/performance_analyst-${version}-doc.zip html
+	ls -ltr dist/performance_analyst-${version}*
 
 # Install the package in a sandbox and import it.
 test_dist: dist
@@ -29,15 +29,15 @@ test_dist: dist
 	virtualenv --no-site-packages --quiet ${virtualPythonDir}
 	make sdist
 	${virtualPythonBinDir}/pip install --quiet psutil
-	${virtualPythonBinDir}/pip install dist/PerformanceAnalyst-${version}.zip
+	${virtualPythonBinDir}/pip install dist/performance_analyst-${version}.zip
 	@echo "*******************************************************************"
 	@echo "* Installation succeeded if the next command prints a Python list *"
 	@echo "*******************************************************************"
-	${virtualPythonBinDir}/python -c "import PerformanceAnalyst; print dir(PerformanceAnalyst)"
+	${virtualPythonBinDir}/python -c "import performance_analyst; print dir(performance_analyst)"
 
 clean:
-	make -C Sources $@
-	make -C Tests $@
+	make -C source $@
+	make -C test $@
 	rm -fr ${virtualPythonDir}
-	find Sources -name "*.pyc" | xargs --no-run-if-empty rm -f
+	find source -name "*.pyc" | xargs --no-run-if-empty rm -f
 

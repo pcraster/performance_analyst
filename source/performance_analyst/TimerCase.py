@@ -21,9 +21,9 @@ class TimerCase(object):
   """
   Timer case instances are the things that get timed by the framework.
 
-  A :class:`timer runner <PerformanceAnalyst.TimerRunner.TimerRunner>` can be
+  A :class:`timer runner <performance_analyst.TimerRunner.TimerRunner>` can be
   used to time a collection of
-  :class:`timer suites <PerformanceAnalyst.TimerSuite.TimerSuite>` containing
+  :class:`timer suites <performance_analyst.TimerSuite.TimerSuite>` containing
   timer cases.
   """
 
@@ -47,7 +47,7 @@ class TimerCase(object):
       Name of the sub-class' member function to time.
 
     Construction of timer cases is done by the
-    :class:`timer loader <PerformanceAnalyst.TimerLoader.TimerLoader>`. You
+    :class:`timer loader <performance_analyst.TimerLoader.TimerLoader>`. You
     normally don't need to call the constructor yourself.
     """
     self.methodName = methodName

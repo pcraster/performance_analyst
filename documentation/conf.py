@@ -12,8 +12,8 @@
 # serve to show the default.
 
 import sys, os
-sys.path.append("../Sources")
-sys.path.append("../Sources/Tools")
+sys.path.append("../source")
+sys.path.append("../source/tool")
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -99,7 +99,7 @@ pygments_style = 'sphinx'
 
 # The theme to use for HTML and HTML Help pages.  Major themes that come with
 # Sphinx are currently 'default' and 'sphinxdoc'.
-html_theme = 'default'
+html_theme = 'alabaster'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -166,7 +166,7 @@ html_static_path = ['_static']
 #html_file_suffix = ''
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'PerformanceAnalystdoc'
+htmlhelp_basename = 'performance_analyst_doc'
 
 
 # -- Options for LaTeX output --------------------------------------------------
@@ -180,7 +180,7 @@ htmlhelp_basename = 'PerformanceAnalystdoc'
 # Grouping the document tree into LaTeX files. List of tuples
 # (source start file, target name, title, author, documentclass [howto/manual]).
 latex_documents = [
-  ('index', 'PerformanceAnalyst.tex', u'Performance Analyst Documentation',
+  ('index', 'performance_analyst.tex', u'Performance Analyst Documentation',
    u'Kor de Jong', 'manual'),
 ]
 

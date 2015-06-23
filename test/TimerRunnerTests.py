@@ -1,6 +1,6 @@
 import unittest
 
-from PerformanceAnalyst import TimerRunner, TimerSuite
+from performance_analyst import TimerRunner, TimerSuite
 
 import MyModuleTimers
 

@@ -2,7 +2,7 @@ import os.path
 import sqlite3
 import unittest
 
-import PerformanceAnalyst as pa
+import performance_analyst as pa
 
 import MyModuleTimers
 

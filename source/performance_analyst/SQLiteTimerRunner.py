@@ -6,7 +6,7 @@ SQLiteTimerRunner
 .. Warning::
 
    * This is work in progress, so don't forget to create backups of your timings database file. Bugs in the software can easely render the database file useless. Since the whole database is stored in a single file, just copying the file to a safe location suffices.
-   * Once in a while a new version of the software may require a database structure change (new tables, new fields, etc). The PerformanceAnalyst tries to hide this fact as much as possible. Database updates will happen behind the scenes, when an old database is used by a new version of the software for the first time. This may take a long time to complete, depending on the size of the database and the exact changes that need to be made. Do not interupt this process!
+   * Once in a while a new version of the software may require a database structure change (new tables, new fields, etc). The performance_analyst tries to hide this fact as much as possible. Database updates will happen behind the scenes, when an old database is used by a new version of the software for the first time. This may take a long time to complete, depending on the size of the database and the exact changes that need to be made. Do not interupt this process!
 """
 import sqlite3
 

@@ -3,7 +3,7 @@ import sqlite3
 import StringIO
 import unittest
 
-import PerformanceAnalyst as pa
+import performance_analyst as pa
 
 import MyModuleTimers
 
