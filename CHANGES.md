@@ -3,7 +3,7 @@
 ## 0.0.9 (in development)
 
 ## 0.0.8
-- The package is now distributed as a source distribution that can be installed and uninstalled using pip. See the [Installation page](install.md) for more information.
+- The package is now distributed as a source distribution that can be installed and uninstalled using pip. See the [Installation page](INSTALL.md) for more information.
 
 ## 0.0.7
 - The `pa.py stat` command now also prints the real-time timings into account. The format of the output is changed a bit.

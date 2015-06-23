@@ -24,7 +24,7 @@ timer runner | Executes all test cases and handles the results, like storing the
 
 
 Further info:
-- [Installation](documentation/install.md)
+- [Installation](INSTALL.md)
 - [Quick start](documentation/quick_start.md)
 - [Generating timer cases](documentation/generating_timer_cases.md)
 - [Changes](CHANGES.md)
