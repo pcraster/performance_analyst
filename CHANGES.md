@@ -1,5 +1,8 @@
 # Changes
 
+## 0.0.10
+- Added support for class level fixtures (set_up_class, tear_down_class).
+
 ## 0.0.9
 - Updated code to conform to PEP8.
 - Minor refactorings. Renamed files, reorganized files, updated documentation,
