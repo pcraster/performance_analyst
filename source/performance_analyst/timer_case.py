@@ -21,9 +21,27 @@ class TimerCase(object):
 
     A :class:`timer runner <performance_analyst.timer_runner.TimerRunner>`
     can be used to time a collection of :class:`timer suites
-    <performance_analyst.TimerSuite.TimerSuite>` containing
+    <performance_analyst.timer_suite.TimerSuite>` containing
     timer cases.
     """
+
+    @classmethod
+    def set_up_class(cls):
+        """
+        Perform initial actions needed by the timer suite.
+
+        The default does nothing. Override when necessary.
+        """
+        pass
+
+    @classmethod
+    def tear_down_class(cls):
+        """
+        Perform clean-up needed by the timer suite.
+
+        The default does nothing. Override when necessary.
+        """
+        pass
 
     @classmethod
     def add_method(cls,

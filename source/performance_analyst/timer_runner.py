@@ -70,12 +70,15 @@ class TimerRunner(object):
 
         return result
 
-    def run_test_suite(self,
+    def run_timer_suite(self,
             suite):
         # From unittest's docs:
         # A test suite is a collection of test cases, test suites, or both. It
         # is used to aggregate tests that should be executed together.
         assert isinstance(suite, timer_suite.TimerSuite)
+
+        # For this suite no cases have been running yet.
+        self.current_timer_case_class.append(None)
 
         result = timer_result.TimerResult()
 
@@ -84,10 +87,28 @@ class TimerRunner(object):
                 timer_case.TimerCase))
 
             if isinstance(item, timer_suite.TimerSuite):
-                result.update(self.run_test_suite(item))
+                result.update(self.run_timer_suite(item))
             elif isinstance(item, timer_case.TimerCase):
+                # Each timer case class' set_up_class() must be called
+                # before the first timer case is run.
+                # Each timer case class' tear_down_class must be called
+                # after the last timer case has run.
+                if self.current_timer_case_class[-1] is None:
+                    self.current_timer_case_class[-1] = item.__class__
+                    self.current_timer_case_class[-1].set_up_class()
+                elif self.current_timer_case_class[-1] != item.__class__:
+                    self.current_timer_case_class[-1].tear_down_class()
+                    self.current_timer_case_class[-1] = item.__class__
+                    self.current_timer_case_class[-1].set_up_class()
+
                 case_result = self.run_timer_case(item)
                 result.update(case_result)
+
+        assert len(self.current_timer_case_class) > 0
+        if self.current_timer_case_class[-1] is not None:
+            self.current_timer_case_class[-1].tear_down_class()
+
+        self.current_timer_case_class.pop()
 
         return result
 
@@ -99,10 +120,12 @@ class TimerRunner(object):
         This function calls :meth:`set_up`, :meth:`process_timer_result`, and
         :meth:`tear_down` at the appropriate times.
         """
+        self.current_timer_case_class = []
         self.set_up(suite.nr_timer_cases())
 
-        result = self.run_test_suite(suite)
+        result = self.run_timer_suite(suite)
 
         self.tear_down()
+        self.current_timer_case_class = []
 
         return result
