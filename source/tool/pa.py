@@ -29,7 +29,7 @@ import docopt
 if __name__ == "__main__":
 
     arguments = docopt.docopt(__doc__,
-                  version="pa version 0.0.10",
+                  version="pa version 0.0.11",
                   options_first=True)
 
     commandname = arguments["<command>"]

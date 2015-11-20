@@ -1,6 +1,6 @@
 version_major       = 0
 version_minor       = 0
-version_patch_level = 10
+version_patch_level = 11
 
 
 def version_as_integer():
