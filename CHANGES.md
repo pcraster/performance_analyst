@@ -1,5 +1,9 @@
 # Changes
 
+## 0.0.11 (in development)
+- Fixed failing pa.py command.
+- Added support for plotting only real or cpu times.
+
 ## 0.0.10
 - Added support for class level fixtures (set_up_class, tear_down_class).
 
