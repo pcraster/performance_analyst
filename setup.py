@@ -1,5 +1,4 @@
 import sys
-# from distutils.core import setup
 from setuptools import setup
 sys.path = ["source"] + sys.path
 import performance_analyst as pa
@@ -17,7 +16,7 @@ setup(
     author_email = "info@pcraster.eu",
     license = "LICENSE.txt",
     package_dir = {"": "source"},
-    packages = ["performance_analyst"],
-    install_requires=["matplotlib", "psutil"],
+    packages = ["performance_analyst", "performance_analyst.pa"],
+    install_requires=["docopt", "matplotlib", "psutil"],
     scripts=["source/tool/pa.py"],
 )

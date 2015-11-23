@@ -38,7 +38,7 @@ if __name__ == "__main__":
         sys.exit("{} is not a pa command. See 'pa --help'.".format(commandname))
 
     argv = [commandname] + arguments["<argument>"]
-    module_name = "pa_{}".format(commandname)
+    module_name = "performance_analyst.pa.{}".format(commandname)
     module = importlib.import_module(module_name)
     result = docopt.docopt(module.__doc__, argv=argv)
 
