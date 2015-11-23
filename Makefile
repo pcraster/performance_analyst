@@ -31,11 +31,13 @@ test_dist: dist
 	rm -fr ${virtual_python_dir}
 	virtualenv --no-site-packages --quiet ${virtual_python_dir}
 	make wheel
-	${virtual_python_bin_dir}/pip install --upgrade --find-links=dist performance_analyst
+	PYTHONPATH="" ${virtual_python_bin_dir}/pip install --find-links=dist performance_analyst
 	@echo "*******************************************************************"
 	@echo "* Installation succeeded if the next command prints a Python list *"
+	@echo "* and the output of pa.py plot --help                             *"
 	@echo "*******************************************************************"
-	${virtual_python_bin_dir}/python -c "import performance_analyst; print dir(performance_analyst)"
+	PYTHONPATH="" ${virtual_python_bin_dir}/python -c "import performance_analyst; print dir(performance_analyst)"
+	PYTHONPATH="" ${virtual_python_bin_dir}/pa.py plot --help
 
 clean:
 	make -C source $@
