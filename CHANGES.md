@@ -1,5 +1,8 @@
 # Changes
 
+## 0.0.12
+- Fixed failing pa.py command due to missing sub-command modules.
+
 ## 0.0.11
 - Fixed failing pa.py command.
 - Added support for plotting only real or cpu times.

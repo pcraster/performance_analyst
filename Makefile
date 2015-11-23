@@ -1,4 +1,4 @@
-version := 0.0.11
+version := 0.0.12
 python_version := ${shell python -c 'import sys; print "{0}.{1}".format(*sys.version_info[:2])'}
 virtual_python_dir := bla
 virtual_python_bin_dir := ${shell python -c 'import sys; print "${virtual_python_dir}/" + ("Scripts" if sys.platform == "win32" else "bin")'}
@@ -13,7 +13,7 @@ test tests:
 
 # Open all files containing the version number.
 bump_version:
-	vi Makefile documentation/conf.py CHANGES.md source/performance_analyst/configuration.py source/tool/pa.py
+	vi Makefile documentation/conf.py CHANGES.md source/tool/pa.py source/performance_analyst/configuration.py
 
 # Create performance_analyst-<version>.{tar.gz,zip}
 sdist: setup.py
