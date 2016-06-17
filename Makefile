@@ -1,4 +1,4 @@
-version := 0.0.12
+version := 0.0.13
 python_version := ${shell python -c 'import sys; print "{0}.{1}".format(*sys.version_info[:2])'}
 virtual_python_dir := bla
 virtual_python_bin_dir := ${shell python -c 'import sys; print "${virtual_python_dir}/" + ("Scripts" if sys.platform == "win32" else "bin")'}

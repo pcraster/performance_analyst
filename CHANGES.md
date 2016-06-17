@@ -1,5 +1,8 @@
 # Changes
 
+## 0.0.13
+- [Support passing location of timer case modules](https://github.com/pcraster/performance_analyst/issues/9)
+
 ## 0.0.12
 - Fixed failing pa.py command due to missing sub-command modules.
 
