@@ -42,7 +42,7 @@ Analyst is installed.
 
 - Matplotlib: http://matplotlib.sourceforge.net
 - Numpy: http://www.numpy.org
-- psutil: http://code.google.com/p/psutil
+- psutil: https://github.com/giampaolo/psutil
 
 
 ## Uninstalling

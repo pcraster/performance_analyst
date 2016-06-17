@@ -1,6 +1,6 @@
 # Quick start
 Below is a small example of a Python module which uses a *timer loader*
-to run a collection of *timer cases* aggregated in *timer suites*. a *timer runner* is used to collect the timings into a database.
+to run a collection of *timer cases* aggregated in *timer suites*. A *timer runner* is used to collect the timings into a database.
 
 
 ```python

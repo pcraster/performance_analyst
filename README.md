@@ -17,10 +17,10 @@ is similar to the terms used in the unit test library:
 
 term         | Description
 ------------ | -----------------------------------------------------------------
-time case    | A method which contains the code that needs to be timed.
-timer suite  | A class in which related time cases are aggregated.
-timer loader | Loads timer suites and their associated timer cases.
-timer runner | Executes all test cases and handles the results, like storing them in a database.
+timer case   | A method which contains the code that needs to be timed
+timer suite  | A class in which related time cases are aggregated
+timer loader | Loads timer suites and their associated timer cases
+timer runner | Executes all test cases and handles the results, like storing them in a database
 
 
 Further info:
