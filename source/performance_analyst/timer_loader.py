@@ -15,13 +15,15 @@ class TimerLoader(object):
     """
 
     def load_timers_from_name(self,
-            name):
+            name,
+            paths=None):
         """
         Load timer cases from a module with a
         :class:`performance_analyst.TimerCase.TimerCase` sub-class.
 
         :param str name: Name of module, formatted as
-            `<module>.<TimerCase sub-class>`.
+            `<module>.<TimerCase sub-class>`
+        :param list paths: Name of paths to search in for module
 
         The `name` passed in is split by the dot to obtain the name of
         the module and the name of the TimerCase sub-class.
@@ -31,7 +33,7 @@ class TimerLoader(object):
         TimerCase sub-class instances.
 
         So, in case the TimerCase sub-class has three member functions,
-        named `time_a`, `time_b` and `time_c`, than this method creates a
+        named `time_a`, `time_b` and `time_c`, then this method creates a
         :class:`timer suite <performance_analyst.timer_suite.TimerSuite>`
         containing three TimerCase sub-class instances.
         """
@@ -40,7 +42,8 @@ class TimerLoader(object):
         module_name = names[0]
         class_name = names[1]
 
-        file_descriptor, pathname, description = imp.find_module(module_name)
+        file_descriptor, pathname, description = imp.find_module(module_name,
+            paths)
 
         with file_descriptor:
             module = imp.load_module(module_name, file_descriptor, pathname,
